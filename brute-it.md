@@ -59,7 +59,8 @@ ___
                 - Root Flag:
                     - THM{pr1v1l3g3_3sc4l4t10n}
 
-        
+___
+
 #### MITIGACIONES
 1. No dejar claves/archivos sensibles dentro de la webapp
 2. No dar permisos elevados a usuarios regulares salvo que sea estrictamente necesario
