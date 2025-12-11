@@ -4,22 +4,22 @@
 * Escaneo:
     * `nmap -v -n --open -sV -sV --min-rate 5000 -Pn <IP>`
 		
-	* Enumeración:
-		* Web:
-			* Dirs:
-			    * /admin	
-			    
-			* Recursos (PHP-HTML-TXT):
-				* /admin/inde.php
-				* /admin/styles.cs
-				* /admin/.zip
-				
-			* Credenciales:
-				* john:
-				* admin:xavier
+* Enumeración:
+	* Web:
+		* Dirs:
+			* /admin	
 			
-			* Web Flag:
-				* THM{brut3_f0rce_is_e4sy}
+		* Recursos (PHP-HTML-TXT):
+			* /admin/inde.php
+			* /admin/styles.cs
+			* /admin/.zip
+			
+		* Credenciales:
+			* john:
+			* admin:xavier
+		
+		* Web Flag:
+			* THM{brut3_f0rce_is_e4sy}
 ___		 
 	
 #### FASE EXPLOTACIÓN
