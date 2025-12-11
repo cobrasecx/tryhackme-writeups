@@ -1,1 +1,1 @@
-CTFs writeups from https://tryhackme.com
+CTFs writeups from https://tryhackme.com, a recognized cybersecurity platform.
