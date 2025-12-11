@@ -57,7 +57,8 @@ ___
                     * `root:football`
                     * (john --show shadow.txt)
                 - Root Flag:
-                    - THM{pr1v1l3g3_3sc4l4t10n}
+                	- cat root.txt 	
+                    	- THM{pr1v1l3g3_3sc4l4t10n}
 
 ___
 
