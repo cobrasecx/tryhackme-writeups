@@ -45,7 +45,7 @@ ___
 
 #### FASE POST-EXPLOTACIÓN (Escalar Privilegios):
 * User Flag:
-    * cat user.txt
+    * `cat user.txt`
         * THM{a_password_is_not_a_barrier}
 * sudo -l
     * (root) NOPASSWD: /bin/cat
@@ -59,7 +59,7 @@ ___
                     * `root:football`
                     * (john --show shadow.txt)
                 - Root Flag:
-                	- cat root.txt 	
+                	- `cat root.txt`
                     	- THM{pr1v1l3g3_3sc4l4t10n}
 
 ___
