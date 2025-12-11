@@ -7,12 +7,14 @@
 * Enumeración:
 	* Web:
 		* Dirs:
-			* /admin	
+  			* `wfuzz -c --hc 400,403,404 --hh 275 -t 200 -z file,/usr/share/seclists/Discovery/Web-Content/raft-large-directories-lowercase.txt -R 3 -u "http://[IP]/FUZZ"`
+				* /admin	
 			
-		* Recursos (PHP-HTML-TXT):
-			* /admin/inde.php
-			* /admin/styles.cs
-			* /admin/.zip
+		* Recursos:
+  			* `wfuzz -c --hc 400,403,404 --hh 275 -t 200 -z file,/usr/share/seclists/Discovery/Web-Content/raft-large-files.txt -u "http://[IP]/admin/FUZZ"`
+				* /admin/index.php
+				* /admin/styles.cs
+				* /admin/.zip
 			
 		* Credenciales:
 			* john:
