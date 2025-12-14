@@ -1,4 +1,4 @@
-# BRUTE-IT
+# BRUTE IT
 
 > Dificultad: Fácil
 
@@ -55,19 +55,19 @@ Apenas tenemos **Footholding del Sistema**, una de las primeras cosas para _Elev
 
 Esto nos permitiría poder leer ficheros como root. Por lo cual, vamos a verificarsi enemos una posible _Explotación Sudo_. Vamos a [GTFOBins](https://gtfobins.github.io/) y terminamos corriendo: `sudo -u root /bin/cat /etc/shadow`.
 
-Nos devuelve el contenido de /etc/shadow y vemos la línea que nos importa:
+Nos devuelve el contenido de `/etc/shadow` y vemos la línea que nos importa:
 
 > `root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.`
 
-Consultando a la IA, por ejemplo nos damos cuenta que trata de un hash _SHA512_, por lo cual tendremos que usar nuevamente John the Ripper para resolver. Creamos un fichero que contenga toda la línea correspondiente a root con: `nano shadow.txt`
+Consultando a la IA, por ejemplo nos damos cuenta que trata de un hash _SHA512_, por lo cual tendremos que usar nuevamente John the Ripper para resolver. Creamos un fichero que contenga toda la línea correspondiente a root con: `nano shadow.txt`.
 
-`root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.:18490:0:99999:7:::`
-                * `john -wordlist=[rockyou.txt] shadow.txt`
-                    * `root:football`
-                    * (john --show shadow.txt)
-                - Root Flag:
-                	- `cat root.txt`
-                    	- THM{pr1v1l3g3_3sc4l4t10n}
+> Le pasamos entonces: `root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.:18490:0:99999:7:::`
+
+Ahora vamos a crackear la con: `john -wordlist=[rockyou.txt] shadow.txt`. Nos devuelve `root:football`. Si queremos recuperarla hacemos `john --show shadow.txt`.             
+
+Bien, ahora que tenos la contraseña, vamos a probarla. Hacemos `su -` y le damos `football`. Somos root!
+
+Ahora leemos la _Root Flag_ con `cat root.txt`. Obtenemos `THM{pr1v1l3g3_3sc4l4t10n}`. Eso es todo.
 
 ___
 
