@@ -46,22 +46,21 @@ ___
 ___
 
 #### FASE POST-EXPLOTACIÓN (Escalar Privilegios):
-Primero obtenemos la `User Flag` con:  
-* `cat user.txt`
-> `<user_flag>`
+Primero obtenemos la _User Flag_ con `cat user.txt`.
 
-Apenas tenemos **Footholding del Sistema**, una de las primeras cosas para _Elevar Privilegios_ es buscar **Privilegios Sudo**. Lo chequeamos con `sudo -l`:  
+Apenas tenemos **Footholding del Sistema**, una de las primeras cosas para _Elevar Privilegios_ es buscar **Privilegios Sudo**. Chequeamos con `sudo -l`:  
 > (root) NOPASSWD: /bin/cat
->> Esto nos permite **Leer Ficheros como Root sin Contraseña**.
+>> Podemos **Leer Ficheros como Root sin Contraseña**.
 
-Vamos a verificar si es una posible _Explotación Sudo_ con dicho binario. Navegamos a [GTFOBins](https://gtfobins.github.io/) y terminamos corriendo: `sudo -u root /bin/cat /etc/shadow`. Nos devuelve el contenido de `/etc/shadow`!  
+Vamos a verificar si es posible una _Explotación Sudo_ con dicho binario. Navegamos a [GTFOBins](https://gtfobins.github.io/) y terminamos corriendo: `sudo -u root /bin/cat /etc/shadow`. Efectivamente, nos devuelve el contenido de `/etc/shadow`!  
 
 Identificamos la línea que nos importa:
-> `root:<hash>`
+> `root:...`
 
-Consultando a la IA, por ejemplo, nos damos cuenta que trata de un hash _SHA512_. Debemos usar nuevamente John the Ripper. Creamos un fichero de texto plano que contenga toda la línea correspondiente a root: `nano shadow.txt`. Le pegamos toda la línea.
+Consultando a la IA, por ejemplo, nos damos cuenta que trata de un hash _SHA512_. Debemos usar nuevamente John the Ripper. Creamos un fichero de texto plano que contenga toda la línea correspondiente a _root_: `nano shadow.txt`. 
+Le pegamos toda la línea.
 
-Ahora crackeamos la pass con: 
+Ahora crackeamos el hash de la pass con:
 * `john -wordlist=[rockyou.txt] shadow.txt`
 
 Obtenemos `root:********`. Si la queremos recuperar:
@@ -74,7 +73,8 @@ Ahora leemos la _Root Flag_ con `cat root.txt`. Eso es todo.
 ___
 
 #### MITIGACIONES
-1. No dejar claves/archivos sensibles dentro de la webapp
-2. No dar permisos elevados a usuarios regulares salvo que sea estrictamente necesario
-3. Verificar que los binarios no tengan vulnerabilidades conocidas
-4. No usar passwords débiles
+1. Usar contraseñas robustas
+2. No dejar info sensible dentro de la webapp
+3. No dar más permisos de los necesarios a usuarios regulares
+4. Verificar que los binarios no tengan vulnerabilidades conocidas
+5. Llevar una política/filosofía _Zero Trust_
