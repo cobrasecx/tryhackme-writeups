@@ -46,10 +46,10 @@ ___
 ___
 
 #### FASE POST-EXPLOTACIÓN (Escalar Privilegios):
-* User Flag:
-    * `cat user.txt`
-        * THM{a_password_is_not_a_barrier}
-* sudo -l
+Primero obtenemos la `User Flag`:
+	* `cat user.txt` ==> `THM{a_password_is_not_a_barrier}`
+
+Apenas tenemos **Footholding del Sistema**, una de las primeras cosas para _Elevar Privilegios_ es buscar **Privilegios Sudo**. Lo chequeamos con sudo -l:
     * (root) NOPASSWD: /bin/cat
         * GTFO Bins
             * `sudo -u root /bin/cat /etc/shadow`
